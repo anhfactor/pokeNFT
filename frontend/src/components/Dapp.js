@@ -103,22 +103,22 @@ export class Dapp extends React.Component {
     //
     // Note that we pass it a callback that is going to be called when the user
     // clicks a button. This callback just calls the _connectWallet method.
-    // if (!this.state.selectedAddress) {
-    //   return (
-    //     <ConnectWallet 
-    //       connectWallet={() => this._connectWallet()} 
-    //       networkError={this.state.networkError}
-    //       dismiss={() => this._dismissNetworkError()}
-    //       progress={this.state.progress}
-    //     />
-    //   );
-    // }
+    if (!this.state.selectedAddress) {
+      return (
+        <ConnectWallet 
+          connectWallet={() => this._connectWallet()} 
+          networkError={this.state.networkError}
+          dismiss={() => this._dismissNetworkError()}
+          progress={this.state.progress}
+        />
+      );
+    }
 
     // If the token data or the user's balance hasn't loaded yet, we show
     // a loading component.
-    // if (!this.state.tokenData || !this.state.balance) {
-    //   return <Loading />;
-    // }
+    if (!this.state.tokenData || !this.state.balance) {
+      return <Loading />;
+    }
     console.log(this.state.balance)
     return (
       <div className="container">
@@ -170,10 +170,10 @@ export class Dapp extends React.Component {
             
             <div className="jumbotron  pt-3 pb-5 mb-0">
               <img className="mb-1" src="https://i.pinimg.com/originals/ad/e4/ae/ade4aee3ca5c50f9b02ab18a58596a24.png" />
-              {/* {this.state.balance.eq(0) && ( */}
+              {this.state.balance.eq(0) && (
                 <button type="button" className="btn btn-danger btn-lg mt-3" onClick={() => this._awardToken()}>Claim your NFT pokemon cards</button>
-              {/* )} */}
-              {/* {this.state.balance.gt(0) && ( */}
+              )}
+              {this.state.balance.gt(0) && (
                 <div>
                   <h5>Select your card:</h5>
                   <select className="form-control" onChange={(event) => this._getCardData(this.state.myCards.findIndex(card => card.toString() === event.target.value.toString()))}
@@ -183,7 +183,7 @@ export class Dapp extends React.Component {
                     ))}
                   </select>
                 </div>
-              {/* )} */}
+              )}
             </div> 
 
           </div>
