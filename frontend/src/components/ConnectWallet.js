@@ -9,31 +9,8 @@ import { Navbar } from "./NavbarUI";
 import { HomeCard } from "./HomeCard";
 import './card-style.css';
 
-export function ConnectWallet({ connectWallet, networkError, dismiss }) {
+export function ConnectWallet({ connectWallet, networkError, dismiss, progress }) {
   return (
-    /*<div className="container">
-      <div className="row justify-content-md-center">
-        <div className="col-12 text-center">
-          {/* Metamask network should be set to Localhost:8545. *//*}
-          {networkError && (
-            <NetworkErrorMessage 
-              message={networkError} 
-              dismiss={dismiss} 
-            />
-          )}
-        </div>
-        <div className="col-6 p-4 text-center">
-          <p>Please connect to your wallet.</p>
-          <button
-            className="btn btn-warning"
-            type="button"
-            onClick={connectWallet}
-          >
-            Connect Wallet
-          </button>
-        </div>
-      </div>
-    </div> */
     <div className="container">
       <Navbar/>
       <div className="row justify-content-md-center">
@@ -42,7 +19,9 @@ export function ConnectWallet({ connectWallet, networkError, dismiss }) {
           <h3>
             <small className="text-muted">Start collecting trading cards using blockchain technology and become the ultimate pokémon trainer.</small>
           </h3>
-          <button type="button" className="btn btn-danger btn-lg mt-3" onClick={connectWallet}>Connect your wallet</button>
+          {progress ?
+          <button type="button" className="btn btn-danger btn-lg mt-3" disabled>Connecting ...</button> :
+          <button type="button" className="btn btn-danger btn-lg mt-3" onClick={connectWallet}>Connect your wallet</button> }
         </div>
         <div className="col-md-4 text-center">
           <img src={pikachu} className="img-fluid" />
