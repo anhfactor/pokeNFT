@@ -20,24 +20,9 @@ import { WaitingForTransactionMessage } from "./WaitingForTransactionMessage";
 import { NoTokensMessage } from "./NoTokensMessage";
 // import { MintToken } from "./MintToken";
 
-import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
-import 'react-tabs/style/react-tabs.css';
-
 import ReactCardFlip from 'react-card-flip';
 import { Navbar } from "./NavbarUI";
 import backcard from '../img/backcard.png';
-import tab1 from '../img/tab1.png';
-import tab2 from '../img/tab2.png';
-
-// Ceramix DID
-import { ThreeIdConnect,  EthereumAuthProvider } from '@3id/connect'
-import ThreeIdResolver from '@ceramicnetwork/3id-did-resolver';
-import {DID} from 'dids';
-import CeramicClient from '@ceramicnetwork/http-client';
-import KeyDidResolver from 'key-did-resolver'
-import {IDX} from '@ceramicstudio/idx';
-import { TileDocument } from '@ceramicnetwork/stream-tile'
-
 
 // This is the Buidler EVM network id, you might change it in the buidler.config.js
 // Here's a list of network ids https://docs.metamask.io/guide/ethereum-provider.html#properties
@@ -47,8 +32,6 @@ const BUIDLER_EVM_NETWORK_ID = '42';
 
 // This is an error code that indicates that the user canceled a transaction
 const ERROR_CODE_TX_REJECTED_BY_USER = 4001;
-const CERAMIC_TESTNET_URL="https://ceramic-clay.3boxlabs.com"
-const ceramic = new CeramicClient(CERAMIC_TESTNET_URL);
 
 // This component is in charge of doing these things:
 //   1. It connects to the user's wallet
@@ -81,9 +64,7 @@ export class Dapp extends React.Component {
       pokeData: undefined,
       moveData: undefined,
       myCards: [],
-      currentCard: undefined,
-      userDID: undefined, // 3DID authentication
-      progress: false
+      currentCard: undefined
     };
 
     this.state = this.initialState;
@@ -103,36 +84,26 @@ export class Dapp extends React.Component {
     //
     // Note that we pass it a callback that is going to be called when the user
     // clicks a button. This callback just calls the _connectWallet method.
-    // if (!this.state.selectedAddress) {
-    //   return (
-    //     <ConnectWallet 
-    //       connectWallet={() => this._connectWallet()} 
-    //       networkError={this.state.networkError}
-    //       dismiss={() => this._dismissNetworkError()}
-    //       progress={this.state.progress}
-    //     />
-    //   );
-    // }
+    if (!this.state.selectedAddress) {
+      return (
+        <ConnectWallet 
+          connectWallet={() => this._connectWallet()} 
+          networkError={this.state.networkError}
+          dismiss={() => this._dismissNetworkError()}
+        />
+      );
+    }
 
     // If the token data or the user's balance hasn't loaded yet, we show
     // a loading component.
-    // if (!this.state.tokenData || !this.state.balance) {
-    //   return <Loading />;
-    // }
-    console.log(this.state.balance)
+    if (!this.state.tokenData || !this.state.balance) {
+      return <Loading />;
+    }
+
     return (
       <div className="container">
         <Navbar/>
-        <Tabs>
-        <TabList>
-          <Tab><img src={tab1} height="32" width="32"/> Claim pokemon cards </Tab>
-          <Tab><img src={tab2} height="32" width="32"/> Edit profile</Tab>
-        </TabList>
-        <TabPanel>
         <div className="row justify-content-md-center d-flex align-items-center">
-          {/* <div>
-            Your DID stored in Local Storage is: {this.state.userDID}
-          </div> */}
           <div className="col-md-6 text-center d-inline-flex flex-column align-items-center">
             <ReactCardFlip isFlipped={this.state.isFlipped} flipDirection="horizontal">
                 
@@ -170,10 +141,10 @@ export class Dapp extends React.Component {
             
             <div className="jumbotron  pt-3 pb-5 mb-0">
               <img className="mb-1" src="https://i.pinimg.com/originals/ad/e4/ae/ade4aee3ca5c50f9b02ab18a58596a24.png" />
-              {/* {this.state.balance.eq(0) && ( */}
-                <button type="button" className="btn btn-danger btn-lg mt-3" onClick={() => this._awardToken()}>Claim your NFT pokemon cards</button>
-              {/* )} */}
-              {/* {this.state.balance.gt(0) && ( */}
+              {this.state.balance.eq(0) && (
+                <button type="button" className="btn btn-danger btn-lg mt-3" onClick={() => this._awardToken()}>Get you first trading card</button>
+              )}
+              {this.state.balance.gt(0) && (
                 <div>
                   <h5>Select your card:</h5>
                   <select className="form-control" onChange={(event) => this._getCardData(this.state.myCards.findIndex(card => card.toString() === event.target.value.toString()))}
@@ -183,19 +154,85 @@ export class Dapp extends React.Component {
                     ))}
                   </select>
                 </div>
-              {/* )} */}
+              )}
             </div> 
 
           </div>
         </div>
-        </TabPanel>
-        <TabPanel>
-          <h2>Any content 2</h2>
-        </TabPanel>
-        </Tabs>
       </div>
     );
 
+    // If everything is loaded, we render the application.
+    /*return (
+      <div className="container p-4">
+        <div className="row">
+          <div className="col-12">
+            <h1>
+              {this.state.tokenData.name} ({this.state.tokenData.symbol})
+            </h1>
+            <p>
+              Welcome <b>{this.state.selectedAddress}</b>, you have{" "}
+              <b>
+                {this.state.balance.toString()} {this.state.tokenData.symbol}
+              </b>
+              .
+            </p>
+          </div>
+        </div>
+
+        <hr />
+
+        <div className="row">
+          <div className="col-12">
+            {/* 
+              Sending a transaction isn't an immidiate action. You have to wait
+              for it to be mined.
+              If we are waiting for one, we show a message here.
+            *//*}
+            {this.state.txBeingSent && (
+              <WaitingForTransactionMessage txHash={this.state.txBeingSent} />
+            )}
+
+            {/* 
+              Sending a transaction can fail in multiple ways. 
+              If that happened, we show a message here.
+            *//*}
+            {this.state.transactionError && (
+              <TransactionErrorMessage
+                message={this._getRpcErrorMessage(this.state.transactionError)}
+                dismiss={() => this._dismissTransactionError()}
+              />
+            )}
+          </div>
+        </div>
+
+        <div className="row">
+          <div className="col-12">
+            {/*
+              If the user has no tokens, we don't show the Tranfer form
+            *//*}
+            {this.state.balance.eq(0) && (
+              <NoTokensMessage selectedAddress={this.state.selectedAddress} />
+            )}
+
+            {/*
+              This component displays a form that the user can use to send a 
+              transaction and transfer some tokens.
+              The component doesn't have logic, it just calls the transferTokens
+              callback.
+            *//*}
+            {this.state.balance.gt(0) && (
+              <Transfer
+                transferTokens={(to, amount) =>
+                  this._transferTokens(to, amount)
+                }
+                tokenSymbol={this.state.tokenData.symbol}
+              />
+            )}
+          </div>
+        </div>
+      </div>
+    );*/
   }
 
   componentWillUnmount() {
@@ -218,57 +255,28 @@ export class Dapp extends React.Component {
     if (!this._checkNetwork()) {
       return;
     }
-    // Request authentication using 3IDConnect.
-    const threeIdConnect = new ThreeIdConnect();
-    const authProvider = new EthereumAuthProvider(window.ethereum, selectedAddress);
-    await threeIdConnect.connect(authProvider);
-    // Create a DID instance.
-    const provider = await threeIdConnect.getDidProvider();
 
-    const resolver = { ...KeyDidResolver.getResolver(),
-      ...ThreeIdResolver.getResolver(ceramic) }
-    const did = new DID({ resolver })
-    // Set the provider to Ceramic
-    did.setProvider(provider)
-    // Authenticate the 3ID
-    this.setState({ progress: true});
-    ceramic.did = did;
-    try {
-      const userDID = await did.authenticate();
-      // store userDID
-      this.setState({
-        userDID: did.id,
-      });
-      // console.log(did.id)
-      // console.log(userDID)
+    this._initialize(selectedAddress);
 
-      this._initialize(selectedAddress);
-
-      // We reinitialize it whenever the user changes their account.
-      window.ethereum.on("accountsChanged", ([newAddress]) => {
-        this._stopPollingData();
-        // `accountsChanged` event can be triggered with an undefined newAddress.
-        // This happens when the user removes the Dapp from the "Connected
-        // list of sites allowed access to your addresses" (Metamask > Settings > Connections)
-        // To avoid errors, we reset the dapp state 
-        if (newAddress === undefined) {
-          return this._resetState();
-        }
-        
-        this._initialize(newAddress);
-      });
+    // We reinitialize it whenever the user changes their account.
+    window.ethereum.on("accountsChanged", ([newAddress]) => {
+      this._stopPollingData();
+      // `accountsChanged` event can be triggered with an undefined newAddress.
+      // This happens when the user removes the Dapp from the "Connected
+      // list of sites allowed access to your addresses" (Metamask > Settings > Connections)
+      // To avoid errors, we reset the dapp state 
+      if (newAddress === undefined) {
+        return this._resetState();
+      }
       
-      // We reset the dapp state if the network is changed
-      window.ethereum.on("networkChanged", ([networkId]) => {
-        this._stopPollingData();
-        this._resetState();
-      });
-      this._saveProfile();
-    } catch (e) {
-      console.error(e);
-    } finally {
-      this.setState({ progress: true});
-    }
+      this._initialize(newAddress);
+    });
+    
+    // We reset the dapp state if the network is changed
+    window.ethereum.on("networkChanged", ([networkId]) => {
+      this._stopPollingData();
+      this._resetState();
+    });
   }
 
   _initialize(userAddress) {
@@ -300,40 +308,6 @@ export class Dapp extends React.Component {
       TokenArtifact.abi,
       this._provider.getSigner(0)
     );
-  }
-
-  async _saveProfile() {
-    // const doc = await TileDocument.create(ceramic, {hello: 'world'})
-
-    const streamId = this.state.userDID.split(":")[2]
-    const stream = await ceramic.loadStream("kjzl6cwe1jw148mmmwz6ori8ilbv8ru71l2nmadmmfob8j4wkkmuzraqdaoqsoz")
-    // const schema = {
-    //   "$schema": "http://json-schema.org/draft-07/schema#",
-    //   "title": "Reward",
-    //   "type": "object",
-    //   "properties": {
-    //     "title": { "type": "string" },
-    //     "message": { "type": "string" }
-    //   },
-    //   "required": [
-    //     "message",
-    //     "title"
-    //   ]
-    // }
-    const content = {'name' : 'anh', 'gender' : 'male', 'email' : 'b'}
-    const metadata = {
-      controllers: [ceramic.did.id] // this will set yourself as the controller of the schema
-    }
-    const rewardSchema = await TileDocument.create(ceramic, content, metadata)
-    // const doc = await TileDocument.load(ceramic, "kjzl6cwe1jw148mmmwz6ori8ilbv8ru71l2nmadmmfob8j4wkkmuzraqdaoqsoz")
-    // const doc = await TileDocument.load(ceramic, streamId)
-    console.log("------")
-    console.log(ceramic)
-    console.log("------")
-  }
-
-  async _readProfile() {
-
   }
 
   // The next to methods are needed to start and stop polling data. While

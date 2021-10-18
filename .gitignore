@@ -1,7 +1,7 @@
 node_modules
 .idea
 .env
-
+.DS_Store
 #Buidler files
 cache
 artifacts
