@@ -8,7 +8,7 @@ export function Navbar() {
     	<a className="navbar-brand" href="#">
         <strong>
         <img src={logo} width="30" height="30" className="d-inline-block align-top mr-1" alt="" />
-        CryptoPokes
+        PokeNFT
         </strong>
         </a>
     </nav>   

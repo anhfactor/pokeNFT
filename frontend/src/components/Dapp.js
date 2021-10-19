@@ -169,9 +169,9 @@ export class Dapp extends React.Component {
             
             <div className="jumbotron  pt-3 pb-5 mb-0">
               <img className="mb-1" src="https://i.pinimg.com/originals/ad/e4/ae/ade4aee3ca5c50f9b02ab18a58596a24.png" />
-              {this.state.balance.eq(0) && (
+              {/* {this.state.balance.eq(0) && ( */}
                 <button type="button" className="btn btn-danger btn-lg mt-3" onClick={() => this._awardToken()}>Claim your NFT pokemon cards</button>
-              )}
+              {/* )} */}
               {this.state.balance.gt(0) && (
                 <div>
                   <h5>Select your card:</h5>
@@ -490,20 +490,5 @@ export class Dapp extends React.Component {
 
   async _awardToken() {
     this._token.awardItem(this.state.selectedAddress);
-    /*
-    const cors_prefix = "https://cors-anywhere.herokuapp.com/";
-    this._token.awardItem(this.state.selectedAddress);
-    const pokeToken = await this._token.tokenOfOwnerByIndex(this.state.selectedAddress,0);
-    this.setState({ pokeToken: pokeToken.toString() });
-    const pokeURL = await this._token.tokenURI(pokeToken);
-    const pokeGetData = await fetch(cors_prefix + pokeURL);
-    const pokeData = await pokeGetData.json();
-    this.setState({ pokeData });
-    const moveURL = "https://cryptopokes.herokuapp.com/api/move/" + pokeToken;
-    const move = await fetch(cors_prefix + moveURL);
-    const moveData = await move.json();
-    this.setState({ moveData });
-    this.setState(prevState => ({ isFlipped: !prevState.isFlipped }));
-    */
   }
 }
