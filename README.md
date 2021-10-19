@@ -4,7 +4,7 @@ This repository contains a project of a Pokémon Trading Card Game using ERC 721
 
 The dapp was created using a [sample project from buidler](http://buidler.dev/tutorial/hackathon-boilerplate-project.html). The NFTs were created following [this guide](https://docs.opensea.io/docs/getting-started). The random number generator used to mint the special tokens was created using [this Chainlink VRF tutorial](https://docs.chain.link/docs/get-a-random-number).
 
-Wanna see this project live? [Try it out.](https://obalfour.github.io/CryptoPokes/)
+Wanna see this project live? [Try it out.](https://github.com/anhnt4288/pokeNFT)
 
 ## Quick start
 
@@ -12,8 +12,8 @@ The first things you need to do are cloning this repository and installing its
 dependencies:
 
 ```sh
-git clone https://github.com/Obalfour/CryptoPokes.git
-cd CryptoPokes
+git clone https://github.com/anhnt4288/pokeNFT.git
+cd pokeNFT
 npm install
 ```
 
