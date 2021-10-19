@@ -1,0 +1,23 @@
+{
+  "name": "api-poke-nft",
+  "version": "1.0.0",
+  "description": "Metadata API for poke NFT collectibles",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "node test.js"
+  },
+  "author": "Nguyen The Anh <anh.nt4288@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "ejs": "^2.6.1",
+    "express": "^4.16.4"
+  },
+  "devDependencies": {
+    "request": "^2.81.0",
+    "tape": "^4.7.0"
+  },
+  "engines": {
+    "node": "8.11.2"
+  }
+}
