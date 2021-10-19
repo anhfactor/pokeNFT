@@ -119,7 +119,6 @@ export class Dapp extends React.Component {
     if (!this.state.tokenData || !this.state.balance) {
       return <Loading />;
     }
-    console.log(this.state.balance)
     return (
       <div className="container">
         <Navbar/>
@@ -151,10 +150,10 @@ export class Dapp extends React.Component {
                     <div className="card-footer pb-0 pr-2 pl-2" style={{height: '155px'}}>
                       <div style={{height: '108px'}}>
                         <div className="d-flex flex-row">
-                          <h5>{this.state.moveData && this.state.moveData.name}</h5>
+                          <h5>{this.state.moveData && this.state.moveData.skill}</h5>
                         </div>
                         <div className="d-flex flex-row">
-                          <p className="card-text"><small>{this.state.moveData && this.state.moveData.description}</small></p>
+                          <p className="card-text"><small>{this.state.moveData && this.state.moveData.skill_description}</small></p>
                         </div>
                       </div>
                       <div className="d-flex flex-row-reverse align-self-end">
@@ -190,7 +189,8 @@ export class Dapp extends React.Component {
         </div>
         </TabPanel>
         <TabPanel>
-          <h2>Any content 2</h2>
+          <h4>Your DID: </h4><p>{this.state.userDID}</p>
+          <h4>Card you own: {this.state.myCards.length}</h4>
         </TabPanel>
         </Tabs>
       </div>
@@ -239,8 +239,6 @@ export class Dapp extends React.Component {
       this.setState({
         userDID: did.id,
       });
-      // console.log(did.id)
-      // console.log(userDID)
 
       this._initialize(selectedAddress);
 
@@ -327,9 +325,6 @@ export class Dapp extends React.Component {
     const rewardSchema = await TileDocument.create(ceramic, content, metadata)
     // const doc = await TileDocument.load(ceramic, "kjzl6cwe1jw148mmmwz6ori8ilbv8ru71l2nmadmmfob8j4wkkmuzraqdaoqsoz")
     // const doc = await TileDocument.load(ceramic, streamId)
-    console.log("------")
-    console.log(ceramic)
-    console.log("------")
   }
 
   async _readProfile() {
@@ -374,7 +369,7 @@ export class Dapp extends React.Component {
       const pokeGetData = await fetch(cors_prefix + pokeURL);
       const pokeData = await pokeGetData.json();
       this.setState({ pokeData });
-      const moveURL = "https://cryptopokes.herokuapp.com/api/move/" + pokeToken;
+      const moveURL = "https://api-poke-nft.herokuapp.com/api/token/" + pokeToken;
       const move = await fetch(cors_prefix + moveURL);
       const moveData = await move.json();
       this.setState({ moveData });
@@ -486,11 +481,10 @@ export class Dapp extends React.Component {
     if (window.ethereum.networkVersion === BUIDLER_EVM_NETWORK_ID) {
       return true;
     }
-
     this.setState({ 
       networkError: 'Please connect Metamask to Kovan'
     });
-
+    alert(this.state.networkError)
     return false;
   }
 
