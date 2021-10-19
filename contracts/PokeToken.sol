@@ -15,7 +15,7 @@ contract PokeToken is ERC721, Ownable {
 
     constructor() public ERC721("PokeToken", "PKTK") {
 
-        _setBaseURI("https://cryptopokes.herokuapp.com/api/token/");
+        _setBaseURI("https://api-poke-nft.herokuapp.com/api/token/");
     }
 
     function setBaseURI(string calldata baseURI) external onlyOwner {
