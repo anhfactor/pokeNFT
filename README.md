@@ -1,10 +1,13 @@
-# Chainlink Ceramic
+# Poke NFT
 
-This repository contains a project of a Pokémon Trading Card Game using ERC 721 Non-Fungible Tokens. A special token is rewarded to a lucky user using on-chain verifiable random functions.
+This project of a Pokémon Trading Card Game using ERC 721 Non-Fungible Tokens. A special token is rewarded to a lucky user using on-chain verifiable random functions. The project i am working on hackathon [Ceramic Sovereign Data Hackathon Bounty
+](https://gitcoin.co/issue/smartcontractkit/chainlink/5190/100026736) I use: 
 
-The dapp was created using a [sample project from buidler](http://buidler.dev/tutorial/hackathon-boilerplate-project.html). The NFTs were created following [this guide](https://docs.opensea.io/docs/getting-started). The random number generator used to mint the special tokens was created using [this Chainlink VRF tutorial](https://docs.chain.link/docs/get-a-random-number).
+The NFTs were created following [this guide](https://docs.opensea.io/docs/getting-started). The random number generator used to mint the special tokens was created using [this Chainlink VRF tutorial](https://docs.chain.link/docs/get-a-random-number). The authenticate, i am using Decentralized Identity from Ceramic called 3ID [3ID DID Method](https://developers.ceramic.network/authentication/3id-did/method/) and save profile using IDX [IDX documentation](https://developers.idx.xyz/learn/welcome/) 
 
-Wanna see this project live? [Try it out.](https://github.com/anhnt4288/pokeNFT)
+Wanna see this project live? [Try it out.](http://poke-nft.vercel.app/)
+
+Video demo: [Youtube link](https://youtu.be/tJABW46pJDU)
 
 ## Quick start
 
@@ -17,7 +20,8 @@ cd pokeNFT
 npm install
 ```
 
-Before deploying your contract you have to set the credentials in your .env file
+Before deploying your contract you have to copy the .env_example to .env and set the credentials in your .env file 
+
 
 Then, on a new terminal, go to the repository's root folder and run this to
 deploy PokeToken contract:
@@ -51,13 +55,8 @@ Your environment will have everything you need to build a Dapp powered by Buidle
 - [Waffle](https://github.com/EthWorks/Waffle/): To have Ethereum-specific Chai assertions/mathers.
 - [A sample frontend/Dapp](./frontend): A Dapp which uses [Create React App](https://github.com/facebook/create-react-app).
 
-## Contracts
 
-- PokeToken: An ERC721 contract for Pokémon collectible cards. [Try it on Remix](https://remix.ethereum.org/#version=soljson-v0.6.6+commit.6c089d02.js&optimize=false&evmVersion=null&gist=f0ac8347c105085d90a93b6bc5910313).
-
-- RandomNumberConsumer: A contract that uses Chainlink VRF for minting a special collectible card. [Try it on Remix](https://remix.ethereum.org/#version=soljson-v0.6.6+commit.6c089d02.js&optimize=false&evmVersion=null&gist=69a3dc9d7a703a91575b79af90af3428).
-
-## Resources
+## API
 
 Additional information about Chainlink and the database for the metadata API is available in the docs section. There is also an [article on Medium](https://oliver-balfour.medium.com/chainlink-the-decentralized-oracle-70f3bc95007b).
 
@@ -75,3 +74,9 @@ Additional information about Chainlink and the database for the metadata API is 
 [Pikachu by Mohammad Ali](https://www.iconfinder.com/icons/1392683/charcter_go_game_pokemon_play_icon)
 
 [Pokemon icons by roundicons.com](https://www.iconfinder.com/iconsets/pokemon-go-vol-1)
+
+[Restful API Poke content](https://pokeapi.co/)
+
+## Future feature
+- Trade poke NFT cards.
+- PVP with others player.
