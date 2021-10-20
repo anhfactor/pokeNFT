@@ -1,6 +1,5 @@
 import React from "react";
 
-import { NetworkErrorMessage } from "./NetworkErrorMessage";
 import pikachu from '../img/pokesite.png';
 import tutorial1 from '../img/tutorial1.svg';
 import tutorial2 from '../img/tutorial2.svg';
@@ -24,7 +23,7 @@ export function ConnectWallet({ connectWallet, networkError, dismiss, progress }
           <button type="button" className="btn btn-danger btn-lg mt-3" onClick={connectWallet}>Connect your wallet</button> }
         </div>
         <div className="col-md-4 text-center">
-          <img src={pikachu} className="img-fluid" />
+          <img src={pikachu} className="img-fluid" alt="pokeNFT"/>
         </div>
       </div>
 
