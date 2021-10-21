@@ -9,6 +9,8 @@ Wanna see this project live? [Try it out.](http://poke-nft.vercel.app/)
 
 Video demo: [Youtube link](https://youtu.be/tJABW46pJDU)
 
+*Notes: The project running on Kovan testnet.
+
 ## Quick start
 
 The first things you need to do are cloning this repository and installing its
